@@ -14,3 +14,7 @@ TABLESPACE pg_default;
 
 ALTER TABLE IF EXISTS animals
     OWNER to postgres;
+
+-- Day 2. Query and Update Animals Table
+ALTER TABLE animals
+  ADD species character varying(200);
