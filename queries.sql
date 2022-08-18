@@ -96,3 +96,36 @@ SELECT species, AVG(escape_attempts)
 FROM animals
 WHERE EXTRACT( YEAR FROM date_of_birth ) BETWEEN 1990 AND 2000
 GROUP BY species;
+
+-- Day 3. Query multiple tables
+SELECT name, owner_id
+FROM animals
+JOIN owners ON owners.id = animals.owner_id
+WHERE owner_id = 4;
+
+SELECT name, species_id, full_name
+FROM animals
+JOIN species ON animals.species_id = species.id
+WHERE species_id = 1;
+
+SELECT full_name, name
+FROM owners
+FULL JOIN animals ON owners.id = animals.owner_id;
+
+SELECT full_name, COUNT(species_id)
+FROM species
+JOIN animals ON species.id = animals.species_id
+GROUP BY full_name;
+
+SELECT species.full_name, owners.full_name, name
+FROM animals
+JOIN owners ON owners.id = animals.owner_id
+JOIN species ON species.id = animals.species_id
+WHERE species.id = 2 AND owner_id = 2;
+
+SELECT full_name, COUNT(owner_id) AS ocurrence
+FROM animals
+JOIN owners ON owners.id = animals.owner_id
+GROUP BY full_name
+ORDER BY ocurrence DESC
+LIMIT 1;
