@@ -41,3 +41,33 @@ ALTER TABLE animals
 ALTER TABLE animals
     ADD CONSTRAINT fk_animal_species FOREIGN KEY (species_id) REFERENCES species (id),
     ADD CONSTRAINT fk_animal_owner FOREIGN KEY (owner_id) REFERENCES owners (id);
+
+-- Day 4. Join Tables
+CREATE TABLE vets
+(
+    id integer NOT NULL PRIMARY KEY,
+    name character varying(100) NOT NULL,
+    age integer,
+    date_of_graduation date
+);
+
+CREATE TABLE specializations
+(
+    species integer NOT NULL,
+    vet integer NOT NULL
+);
+
+ALTER TABLE specializations
+    ADD CONSTRAINT fk_spec_species FOREIGN KEY (species) REFERENCES species (id),
+    ADD CONSTRAINT fk_spec_vet FOREIGN KEY (vet) REFERENCES vets (id);
+
+CREATE TABLE visits
+(
+    animal integer NOT NULL,
+    vet integer NOT NULL,
+    visit_date date
+);
+
+ALTER TABLE visits
+    ADD CONSTRAINT fk_visit_animal FOREIGN KEY (animal) REFERENCES animals (id),
+    ADD CONSTRAINT fk_spec_vet FOREIGN KEY (vet) REFERENCES vets (id);

@@ -129,3 +129,81 @@ JOIN owners ON owners.id = animals.owner_id
 GROUP BY full_name
 ORDER BY ocurrence DESC
 LIMIT 1;
+
+-- Day 4. Join Tables
+SELECT animals.name, vets.name, visits.visit_date as dates
+FROM animals
+JOIN visits ON visits.animal = animals.id
+JOIN vets ON vets.id = visits.vet
+WHERE visits.vet = 1
+ORDER BY dates DESC
+LIMIT 1
+
+SELECT vets.name, COUNT(*) as total
+FROM visits
+JOIN vets ON visits.vet = vets.id
+WHERE visits.vet = 3
+GROUP BY 1;
+
+SELECT vets.name, species.full_name
+FROM specializations
+JOIN species ON specializations.species = species.id
+FULL JOIN vets ON specializations.vet = vets.id
+
+SELECT animals.name, vets.name, visits.visit_date
+FROM visits
+JOIN animals ON visits.animal = animals.id
+JOIN vets ON visits.vet = vets.id
+WHERE visits.vet = 3
+AND visits.visit_date BETWEEN '2020-04-01' and '2020-08-30';
+
+SELECT animals.name, COUNT(*) as total
+FROM visits
+JOIN animals ON visits.animal = animals.id
+GROUP BY 1
+ORDER BY total DESC
+LIMIT 1;
+
+SELECT animals.name, vets.name, visits.visit_date as dates
+FROM visits
+JOIN animals ON visits.animal = animals.id
+JOIN vets ON visits.vet = vets.id
+WHERE visits.vet = 2
+ORDER BY dates
+LIMIT 1;
+
+SELECT animals.name as animal_name,
+species.full_name as animal_species,
+animals.date_of_birth as animal_birth,
+animals.escape_attempts as animal_escapes,
+animals.neutered as neutered,
+owners.full_name as animal_owner,
+animals.weight_kg as animal_weight,
+vets.name as vet_name,
+vets.age as vet_age,
+visits.visit_date as visit_date
+FROM visits
+JOIN animals ON visits.animal = animals.id
+JOIN species ON species.id = animals.species_id
+JOIN owners ON owners.id = animals.owner_id
+JOIN vets ON visits.vet = vets.id
+ORDER BY visit_date DESC
+LIMIT 1;
+
+SELECT COUNT(*)
+FROM visits
+LEFT JOIN animals ON visits.animal = animals.id
+LEFT JOIN vets ON visits.vet = vets.id
+WHERE animals.species_id NOT IN (
+    SELECT species FROM specializations
+	WHERE specializations.vet = vets.id
+);
+
+SELECT species.full_name as species, COUNT(*) as total
+FROM visits
+LEFT JOIN animals ON visits.animal = animals.id
+LEFT JOIN species ON animals.species_id = species.id
+WHERE visits.vet = 2
+GROUP BY species
+ORDER BY total DESC
+LIMIT 1;
